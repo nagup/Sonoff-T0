@@ -9,7 +9,7 @@ USB to serial adapter (I used a red FTDI clone) (It NEEDS to be 3.3V logic or at
 ESPhome web
 Male to Female jumper wires to go from serial adapter to PCB (going to hold the pins into the PCB by hand until its programmed)
 
-
+# *Assuming that you know the rough ins and outs of using ESPHome and Homeassistant and are not completely new to this*
 
 # Step 1: 
 Turn off the power at the breaker (dont skip, the screws of the live terminals at the back are scarily close to touching the metal back box's that we have in the UK and will lead to a big BANG....and an increased heart rate) 
