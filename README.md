@@ -42,7 +42,49 @@ I just pushed the male ends of the jumper wires into the holes including the loo
 
 # Step 4: Connect serial adapter to ESPHome Web (keep holding the wires into the serial header, not too long left I promise)
 
-Connect the serial adapter to your computer and follow the steps in ESPHome to connect the adapter, install the basic configuration. Once completed, unplug the USB connection to the adapter (to power down the PCB). Pull out the loose wire now and connect the serial adapter again, may need to connect the adapter to ESPHome Web again then click the 3 dots and press configure WiFi. Go through that and then you want to watch the logs ( I did it by opening homeassistant and going to the web UI of ESPHome, find the device (may need to press adopt first) then you can press logs to start a logging session, let it do what it needs to until you see the big chunk of pink text then press the white square on the PCB as if you are touching the light switch to turn the light on and you should see some text appear in the log window saying that the state has changed. 
+Connect the serial adapter to your computer and follow the steps in ESPHome to connect the adapter, install the basic configuration. 
+
+Once completed, unplug the USB connection to the adapter (to power down the PCB). Pull out the loose wire now and connect the serial adapter again, may need to connect the adapter to ESPHome Web again then click the 3 dots and press configure WiFi. 
+
+After this, the device should appear as online in the ESPhome dashboard. Then you want to press edit and underneath all the basic setup YAML thats already there, you want to paste the following (Copied from https://github.com/esphome/esphome-devices/blob/849b599b812d5b8da85a09d430c224545c647e63/src/docs/devices/Sonoff-T1-T2-T3/index.md)
+(the line saying esp8266.... is removed because its already defined in the YAML file at the top)
+```
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    id: button_1
+    on_press:
+      then:
+        - light.toggle: light_1
+
+  - platform: status
+    name: "T1 Status"
+
+output:
+  - platform: gpio
+    pin: GPIO12
+    id: relay_1
+
+light:
+  - platform: binary
+    name: "T1"
+    id: light_1
+    output: relay_1
+
+status_led:
+  pin:
+    number: GPIO13
+    inverted: yes
+```
+
+Save that and install it (I know your fingers are aching but keep it together, not long left) 
+
+Now you want to watch the logs, so that we can test the touch button and see if its sending updates over the network. I did it by opening homeassistant and going to the web UI of ESPHome, find the device (may need to press adopt first) then you can press logs to start a logging session, let it do what it needs to until you see the big chunk of pink text then press the white square on the PCB as if you are touching the light switch to turn the light on and you should see some text appear in the log window saying that the state has changed. 
 
 # Step 5: 
 
@@ -52,3 +94,5 @@ Finally, you can push the pcb back into place on the light switch, close up the 
 
 
 Sorry for the lack of detailed images etc I only thought after I did it that I should write a guide on it since I wasnt able to find one, just the one linked to above that referenced the T0 specifically, other guides show the T1 onwards for which the PCB is different. 
+
+
